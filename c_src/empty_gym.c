@@ -36,27 +36,31 @@ MODULE_API int get_rl_obs(double *to_populate, int length) {
 	return 1;
 }
 
-MODULE_API int get_action_len() {
-	printf("In get_action_len\n");
+MODULE_API int get_action_space(double act_low[], double act_high[], int len) {
+	printf("In get_action_space. length=%d\n", len);
+	if(NULL != act_low && NULL != act_high) {
+		act_low[0] = -1.0;
+		act_high[0] = 1.0;
+	}
 	return 1;
 }
 
-MODULE_API int get_action_space(double act_low[], double act_high[], int len) {
-	printf("In get_action_space. length=%d\n", len);
-	act_low[0] = -1.0;
-	act_high[0] = 1.0;
+MODULE_API int get_action_len() {
+	printf("In get_action_len\n");
+	return get_action_space(NULL, NULL, 0);
+}
+
+MODULE_API int get_observation_space(double obs_low[], double obs_high[], int len) {
+	printf("In get_observation_space. length=%d\n", len);
+	if(NULL != obs_low && NULL != obs_high) {
+		obs_low[0] = -1.0;
+		obs_high[0] = 1.0;
+	}
 	return 1;
 }
 
 MODULE_API int get_observation_len() {
 	printf("In get_observation_len\n");
-	return 1;
-}
-
-MODULE_API int get_observation_space(double obs_low[], double obs_high[], int len) {
-	printf("In get_observation_space. length=%d\n", len);
-	obs_low[0] = -1.0;
-	obs_high[0] = 1.0;
-	return 1;
+	return get_observation_space(NULL, NULL, 0);
 }
 
