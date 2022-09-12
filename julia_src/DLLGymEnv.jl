@@ -9,9 +9,10 @@ mutable struct DLLGymEnv <: AbstractEnv
     done::Bool
     
     function DLLGymEnv(libpath::String, setup_txt::String, done::Bool)
-        new(libpath, setup_txt, done)
-        ccall(("instantiate", "../empty_gym"), Cvoid, (Ptr{Cstring},), setup_txt)
+        e = new(libpath, setup_txt, done)
+        ccall(("instantiate", libpath), Cvoid, (Cstring,), setup_txt)
         ccall(("reset", "../empty_gym"), Cvoid, ())
+        return e
     end
 end
 
