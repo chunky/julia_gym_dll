@@ -27,13 +27,15 @@ MODULE_API void render() {
 
 MODULE_API double reward() {
 	printf("In reward.\n");
-	return 0.0;
+	return 0.98;
 }
 
 MODULE_API int get_rl_obs(double *to_populate, int length) {
 	printf("In get_rl_obs. length=%d\n", length);
-	to_populate[0] = 42.0;
-	return 1;
+	to_populate[0] = 0.0;
+	to_populate[1] = 2.718;
+	to_populate[2] = 42;
+	return length;
 }
 
 MODULE_API int get_action_space(double act_low[], double act_high[], int len) {
@@ -47,7 +49,8 @@ MODULE_API int get_action_space(double act_low[], double act_high[], int len) {
 
 MODULE_API int get_action_len() {
 	printf("In get_action_len\n");
-	return get_action_space(NULL, NULL, 0);
+	int len = get_action_space(NULL, NULL, 0);
+	return len;
 }
 
 MODULE_API int get_observation_space(double obs_low[], double obs_high[], int len) {
@@ -55,8 +58,12 @@ MODULE_API int get_observation_space(double obs_low[], double obs_high[], int le
 	if(NULL != obs_low && NULL != obs_high) {
 		obs_low[0] = -1.0;
 		obs_high[0] = 1.0;
+		obs_low[1] = 0.0;
+		obs_high[1] = 10.0;
+		obs_low[2] = -42.0;
+		obs_high[2] = 42.0;
 	}
-	return 1;
+	return 3;
 }
 
 MODULE_API int get_observation_len() {
