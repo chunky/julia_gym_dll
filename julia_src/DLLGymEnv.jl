@@ -10,7 +10,7 @@ mutable struct DLLGymEnv <: AbstractEnv
     
     function DLLGymEnv(libpath::String, setup_txt::String, done::Bool)
         e = new(libpath, setup_txt, done)
-        ccall(("instantiate", libpath), Cvoid, (Cstring,), setup_txt)
+        ccall(("instantiate", "../empty_gym"), Cvoid, (Cstring,), setup_txt)
         ccall(("reset", "../empty_gym"), Cvoid, ())
         return e
     end
