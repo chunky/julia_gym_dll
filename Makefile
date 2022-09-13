@@ -2,15 +2,22 @@
 CC=gcc
 CFLAGS=-fPIC -pedantic -Wall -Wextra -march=native -shared
 
-TARGET=empty_gym.so
-SOURCES=$(shell echo c_src/*.c)
-OBJECTS=$(SOURCES:.c=.o)
+EMPTY_TARGET=empty_gym.so
+EMPTY_SOURCES=c_src/empty_gym.c
+EMPTY_OBJECTS=$(EMPTY_SOURCES:.c=.o)
 
-all: $(TARGET)
+PENDULUM_TARGET=pendulum_gym.so
+PENDULUM_SOURCES=c_src/pendulum_gym.c
+PENDULUM_OBJECTS=$(PENDULUM_SOURCES:.c=.o)
+
+all: $(EMPTY_TARGET) $(PENDULUM_TARGET)
 
 clean:
-	rm -f ${OBJECTS} ${TARGET}
+	rm -f c_src/*.o ${TARGET} $(PENDULUM_TARGET)
 
-$(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJECTS)
+$(EMPTY_TARGET): $(EMPTY_OBJECTS)
+	$(CC) $(CFLAGS) -o $(EMPTY_TARGET) $(EMPTY_OBJECTS)
+
+$(PENDULUM_TARGET): $(PENDULUM_OBJECTS)
+	$(CC) $(CFLAGS) -o $(PENDULUM_TARGET) $(PENDULUM_OBJECTS)
 
