@@ -4,6 +4,7 @@ using Base.Libc.Libdl
 using ReinforcementLearning
 using IntervalSets
 
+# Load all of the functions from the DLL Up-front
 struct DLLGymFuncs
     instantiate
     reset
@@ -14,6 +15,7 @@ struct DLLGymFuncs
     reward
     render
     step
+    get_rl_obs
     
     function DLLGymFuncs(libpath::String)
         hndl = dlopen(libpath)
@@ -29,27 +31,30 @@ struct DLLGymFuncs
         dll_reward = dlsym(hndl, "reward")
         dll_render = dlsym(hndl, "render")
         dll_step = dlsym(hndl, "step")
+        dll_get_rl_obs = dlsym(hndl, "get_rl_obs")
         
         new(dll_instantiate, dll_reset, dll_get_action_len, dll_get_action_space,
-            dll_get_observation_len, dll_get_observation_space, dll_reward, dll_render, dll_step)
+            dll_get_observation_len, dll_get_observation_space, dll_reward, dll_render,
+            dll_step, dll_get_rl_obs)
     end
 end
 
+# The actual Gym
 mutable struct DLLGymEnv <: AbstractEnv
     libpath::String
     setup_txt::String
     done::Bool
     gymfuncs::DLLGymFuncs
     
-    function DLLGymEnv(libpath::String, setup_txt::String, done::Bool)
-        e = new(libpath, setup_txt, done, DLLGymFuncs(libpath))
+    function DLLGymEnv(libpath::String, setup_txt::String)
+        e = new(libpath, setup_txt, false, DLLGymFuncs(libpath))
         ccall(e.gymfuncs.instantiate, Cvoid, (Cstring,), setup_txt)
         ccall(e.gymfuncs.reset, Cvoid, ())
         return e
     end
 end
 
-DLLGymEnv(libpath, setup_txt) = DLLGymEnv(libpath, setup_txt, false)
+# Convenience instantiators
 DLLGymEnv(libpath) = DLLGymEnv(libpath, "setup.txt")
 DLLGymEnv() = DLLGymEnv("../pendulum_gym")
 
