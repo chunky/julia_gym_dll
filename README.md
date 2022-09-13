@@ -33,4 +33,8 @@ for i in 1:100
 end
 ```
 
+## License
+
+This code is made available under the MIT license.
+
 Gary <chunky@icculus.org>
