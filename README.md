@@ -11,4 +11,26 @@ I like Julia. So as a side project, this is a Julia variant that pushes
 the interface up so it works with ReinforcementLearning.jl, from here:
 https://juliareinforcementlearning.org/
 
+## Usage
+
+```shell
+# To build the test environments
+make
+```
+
+```julia
+# To instatiate and run the Gym
+using ReinforcementLearning
+
+include("./DLLGymEnv.jl")
+
+# To run it:
+env = DLLGymEnv("../pendulum_gym.so")
+A = action_space(env)
+for i in 1:100
+    env(rand(A), render=true)
+    is_terminated(env) && break
+end
+```
+
 Gary <chunky@icculus.org>
