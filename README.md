@@ -13,10 +13,21 @@ https://juliareinforcementlearning.org/
 
 ## Usage
 
+### Setup
+
 ```shell
 # To build the test environments
 make
 ```
+
+```julia
+# To recreate the necessary environment+dependencies
+import Pkg
+Pkg.activate(".")
+Pkg.instantiate()
+```
+
+### Running
 
 ```julia
 # To instatiate and run the Gym
