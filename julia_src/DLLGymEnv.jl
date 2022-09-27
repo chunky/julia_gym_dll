@@ -94,7 +94,7 @@ function RLBase.reward(env::DLLGymEnv)
 end
 
 function (env::DLLGymEnv)(a; render=false)
-    env.done = ccall(env.gymfuncs.step, Cint, (Ptr{Cdouble}, Cint), a, length(a))
+    env.done = (0 == ccall(env.gymfuncs.step, Cint, (Ptr{Cdouble}, Cint), a, length(a)))
     if render
         ccall(env.gymfuncs.render, Cvoid, ())
     end
